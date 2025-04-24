@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crash Predictor Tool</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', monospace;
+      background: url('https://i.pinimg.com/736x/e6/09/e2/e609e221f58b160754b41d2f2de4b267.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.8);
+      max-width: 95%;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    input {
+      background-color: #111;
+      color: #00ffcc;
+    }
+    button {
+      background-color: #00ffcc;
+      color: #000;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #00e6b8;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📉 Crash Predictor Tool</h2>
+    <input type="number" id="mult1" placeholder="Last Crash 1">
+    <input type="number" id="mult2" placeholder="Last Crash 2">
+    <input type="number" id="mult3" placeholder="Last Crash 3">
+    <button onclick="predict()">Predict Safe Cashout</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function predict() {
+      let m1 = parseFloat(document.getElementById("mult1").value);
+      let m2 = parseFloat(document.getElementById("mult2").value);
+      let m3 = parseFloat(document.getElementById("mult3").value);
+      let result = document.getElementById("result");
+
+      if (isNaN(m1) || isNaN(m2) || isNaN(m3)) {
+        result.textContent = "Please enter all three crash values.";
+        return;
+      }
+
+      let avg = (m1 + m2 + m3) / 3;
+      if (m1 > 2.0 && m2 > 2.0 && m3 > 2.0) {
+        let safe = (Math.random() * (1.5 - 1.1) + 1.1).toFixed(2);
+        result.textContent = `✅ Safe Cashout: ${safe}x`;
+      } else if (avg > 1.8) {
+        let safe = (Math.random() * (1.4 - 1.1) + 1.1).toFixed(2);
+        result.textContent = `⚠️ Likely Safe: ${safe}x`;
+      } else {
+        result.textContent = "🚫 Skip this round for safety.";
+      }
+
+      // Shift values
+      document.getElementById("mult3").value = document.getElementById("mult2").value;
+      document.getElementById("mult2").value = document.getElementById("mult1").value;
+      document.getElementById("mult1").value = "";
+    }
+  </script>
+</body>
+</html>
